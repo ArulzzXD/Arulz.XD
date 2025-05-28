@@ -287,7 +287,7 @@ background-color: #218838;
 </div>
 
 <div class="menu">
-    <a href="./" class="menu-item">All</a>
+    <a href="" class="menu-item">All</a>
     <a href="testi/" class="menu-item">Testimoni</a>
     <a href="sosmed/" class="menu-item">Sosmed</a>
     <a href="kontak/" class="menu-item">Credits</a>
@@ -803,12 +803,14 @@ ledScrollTextElement.addEventListener("animationend", () => {
 playLedAnimation();
 
 // Highlight menu aktif berdasarkan URL
-const currentPath = window.location.pathname.replace(/\/$/, ""); // hapus slash di akhir
-
 document.querySelectorAll('.menu-item').forEach(link => {
-    const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
-    if (linkPath === currentPath) {
+    const page = window.location.pathname.split("/").pop();
+    const href = link.getAttribute("href");
+
+    if (href === page || (page === "" && href === "index.html")) {
         link.classList.add("active");
+    } else {
+        link.classList.remove("active");
     }
 });
 </script>
