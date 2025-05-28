@@ -288,11 +288,14 @@
             const page = window.location.pathname.split("/").pop();
             const href = link.getAttribute("href");
 
-            if (href === page || (page === "" && href === "index.html")) {
-                link.classList.add("active");
-            } else {
-                link.classList.remove("active");
-            }
+            const currentPath = window.location.pathname.replace(/\/$/, ""); // hapus slash di akhir
+
+document.querySelectorAll('.menu-item').forEach(link => {
+    const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
+    if (linkPath === currentPath) {
+        link.classList.add("active");
+    }
+});
         });
     </script>
 </body>
