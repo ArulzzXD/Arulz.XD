@@ -309,18 +309,13 @@ ledScrollTextElement.addEventListener("animationend", () => {
 playLedAnimation();
 
 // Highlight menu aktif berdasarkan URL
-document.querySelectorAll('.menu-item').forEach(link => {
-    const page = window.location.pathname.split("/").pop();
-    const href = link.getAttribute("href");
-
-    const currentPath = window.location.pathname.replace(/\/$/, ""); // hapus slash di akhir
+const currentPath = window.location.pathname.replace(/\/$/, ""); // hapus slash di akhir
 
 document.querySelectorAll('.menu-item').forEach(link => {
     const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
     if (linkPath === currentPath) {
         link.classList.add("active");
     }
-});
 });
 </script>
 </body>
