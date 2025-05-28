@@ -237,11 +237,11 @@
 
     <!-- Menu -->
     <div class="menu">
-    <a href="./" class="menu-item">All</a>
-    <a href="testi/" class="menu-item">Testimoni</a>
-    <a href="sosmed/" class="menu-item">Sosmed</a>
-    <a href="kontak/" class="menu-item">Credits</a>
-</div>
+         <a href="./" class="menu-item">All</a>
+         <a href="testi/" class="menu-item">Testimoni</a>
+         <a href="sosmed/" class="menu-item">Sosmed</a>
+         <a href="kontak/" class="menu-item">Credits</a>
+    </div>
 
     <!-- Testimoni -->
     <div class="testimonial-section">
@@ -284,11 +284,7 @@
         playLedAnimation();
 
         // Highlight menu aktif
-        document.querySelectorAll('.menu-item').forEach(link => {
-            const page = window.location.pathname.split("/").pop();
-            const href = link.getAttribute("href");
-
-            const currentPath = window.location.pathname.replace(/\/$/, ""); // hapus slash di akhir
+        const currentPath = window.location.pathname.replace(/\/$/, ""); // hapus slash di akhir
 
 document.querySelectorAll('.menu-item').forEach(link => {
     const linkPath = new URL(link.href).pathname.replace(/\/$/, "");
@@ -296,7 +292,6 @@ document.querySelectorAll('.menu-item').forEach(link => {
         link.classList.add("active");
     }
 });
-        });
     </script>
 </body>
 </html>
