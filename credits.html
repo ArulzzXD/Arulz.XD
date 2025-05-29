@@ -11,17 +11,18 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-image: url('https://files.catbox.moe/ub8bsg.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        body.light-theme {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        body.dark-theme {
+            background-color: #111827;
+            color: #ffffff;
         }
 
         header {
@@ -134,7 +135,6 @@
             font-weight: bold;
         }
 
-        /* LED Scroller */
         .led-scroller {
             width: 100%;
             overflow: hidden;
@@ -205,16 +205,6 @@
             to { transform: translateX(-100%); }
         }
 
-        body.light-theme {
-            background-color: #ffffff;
-            color: #000000;
-        }
-
-        body.dark-theme {
-            background-color: #111827;
-            color: #ffffff;
-        }
-
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -237,7 +227,6 @@
 </head>
 <body>
 
-    <!-- Theme Toggle Button -->
     <button class="theme-toggle" id="themeToggle">
         <i class="fas fa-sun" id="themeIcon"></i>
     </button>
@@ -248,7 +237,6 @@
     </header>
     <br>
 
-    <!-- LED Scroller -->
     <div class="led-scroller">
         <span id="ledScrollText">🎁 Promo Spesial Hari Ini!</span>
     </div>
@@ -302,7 +290,6 @@
                 </table>
             </div>
 
-            <!-- Social Media -->
             <div class="social-media">
                 <a href="#"><i class="fab fa-twitter"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
@@ -318,13 +305,22 @@
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const currentTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-theme');
             themeIcon.classList.remove('fa-sun');
             themeIcon.classList.add('fa-moon');
-        } else {
+        } else if (currentTheme === 'light') {
             document.body.classList.add('light-theme');
+        } else {
+            if (prefersDark) {
+                document.body.classList.add('dark-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            } else {
+                document.body.classList.add('light-theme');
+            }
         }
 
         themeToggle.addEventListener('click', () => {
@@ -342,7 +338,6 @@
             }
         });
 
-        // LED SCROLLER
         const ledScrollTextElement = document.getElementById("ledScrollText");
         const ledMessages = [
             "🙏 Selamat Datang Di Toko Arulz-XD",
@@ -368,7 +363,6 @@
 
         playLedAnimation();
 
-        // Highlight menu aktif
         document.querySelectorAll('.menu-item').forEach(link => {
             const page = window.location.pathname.split("/").pop();
             const href = link.getAttribute("href");
