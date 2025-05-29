@@ -147,37 +147,60 @@
     }
 
     /* Swiper Navigation Buttons style like https://topup-instan.v-pedia.web.id/ */
-    .swiper-button-prev, .swiper-button-next {
-      width: 36px;
-      height: 36px;
-      background: rgba(255, 255, 255, 0.85);
-      border-radius: 50%;
-      box-shadow: 0 0 6px rgb(0 0 0 / 0.15);
-      color: #222;
-      font-size: 20px;
-      line-height: 36px;
-      text-align: center;
-      cursor: pointer;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      user-select: none;
-      z-index: 10;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+    /* Override tombol navigasi Swiper */
+.swiper-button-prev,
+.swiper-button-next {
+  width: 60px;              /* lebarkan tombol */
+  height: 100px;            /* buat memanjang */
+  background-color: #fff;   /* putih polos */
+  border: 6px solid #000;   /* garis tepi hitam */
+  border-radius: 12px;      /* sudut agak bulat */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  box-shadow: none;         /* hilangkan shadow kalau perlu */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    .swiper-button-prev:hover, .swiper-button-next:hover {
-      background: #fff;
-      color: #111;
-    }
+/* Panah dengan pseudo-element */
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: solid #000;
+  border-width: 0 6px 6px 0;  /* hanya dua sisi */
+}
 
-    .swiper-button-prev {
-      left: 4px;
-    }
+/* Arah panah */
+.swiper-button-prev::after {
+  transform: rotate(135deg);  /* panah kiri */
+}
 
-    .swiper-button-next {
-      right: 4px;
-    }
+.swiper-button-next::after {
+  transform: rotate(-45deg);  /* panah kanan */
+}
+
+/* Posisi kiri/kanan */
+.swiper-button-prev {
+  left: 8px;
+}
+
+.swiper-button-next {
+  right: 8px;
+}
+
+/* Hover state (opsional) */
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  background-color: #fff;  /* tetap putih */
+  border-color: #111;      /* agak gelap saat hover */
+}
   </style>
 </head>
 <body>
