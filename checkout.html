@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Checkout Produk</title>
-  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png">
+  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
@@ -97,7 +97,7 @@
       border-radius: 10px;
       border: 1px solid #ccc;
       margin-bottom: 10px;
-      position: relative; /* untuk tombol navigasi */
+      position: relative; /* needed for absolute nav buttons */
     }
 
     .swiper-slide {
@@ -116,34 +116,7 @@
       user-select: none;
     }
 
-    /* Tombol navigasi */
-    .swiper-button-prev, .swiper-button-next {
-      color: #28a745;
-      font-size: 28px;
-      font-weight: bold;
-      width: 35px;
-      height: 35px;
-      background: rgba(255,255,255,0.8);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      user-select: none;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-    }
-
-    .swiper-button-prev {
-      left: 10px;
-    }
-
-    .swiper-button-next {
-      right: 10px;
-    }
-
+    /* Modal */
     .confirm-content {
       background: white;
       margin: 10% auto;
@@ -173,6 +146,38 @@
       background-color: rgba(0,0,0,0.8);
     }
 
+    /* Swiper Navigation Buttons style like https://topup-instan.v-pedia.web.id/ */
+    .swiper-button-prev, .swiper-button-next {
+      width: 36px;
+      height: 36px;
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgb(0 0 0 / 0.15);
+      color: #222;
+      font-size: 20px;
+      line-height: 36px;
+      text-align: center;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      user-select: none;
+      z-index: 10;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .swiper-button-prev:hover, .swiper-button-next:hover {
+      background: #fff;
+      color: #111;
+    }
+
+    .swiper-button-prev {
+      left: 4px;
+    }
+
+    .swiper-button-next {
+      right: 4px;
+    }
   </style>
 </head>
 <body>
@@ -186,10 +191,9 @@
           <!-- Gambar akan diisi via JS -->
         </div>
         <div class="swiper-pagination"></div>
-
-        <!-- Tombol navigasi -->
-        <div class="swiper-button-prev">❮</div>
-        <div class="swiper-button-next">❯</div>
+        <!-- Navigasi tombol -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
     </div>
 
@@ -327,7 +331,7 @@
       `<div class="swiper-slide"><img src="${src}" alt="Gambar Produk" /></div>`
     ).join("");
 
-    // Init swiper dengan navigasi tombol
+    // Init swiper tanpa autoplay, dengan navigasi
     const swiper = new Swiper(".produk-swiper", {
       loop: true,
       pagination: {
