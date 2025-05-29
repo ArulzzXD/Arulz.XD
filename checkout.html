@@ -97,6 +97,7 @@
       border-radius: 10px;
       border: 1px solid #ccc;
       margin-bottom: 10px;
+      position: relative; /* untuk tombol navigasi */
     }
 
     .swiper-slide {
@@ -113,6 +114,34 @@
       border-radius: 10px;
       pointer-events: none;
       user-select: none;
+    }
+
+    /* Tombol navigasi */
+    .swiper-button-prev, .swiper-button-next {
+      color: #28a745;
+      font-size: 28px;
+      font-weight: bold;
+      width: 35px;
+      height: 35px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+    }
+
+    .swiper-button-prev {
+      left: 10px;
+    }
+
+    .swiper-button-next {
+      right: 10px;
     }
 
     .confirm-content {
@@ -157,6 +186,10 @@
           <!-- Gambar akan diisi via JS -->
         </div>
         <div class="swiper-pagination"></div>
+
+        <!-- Tombol navigasi -->
+        <div class="swiper-button-prev">❮</div>
+        <div class="swiper-button-next">❯</div>
       </div>
     </div>
 
@@ -294,12 +327,16 @@
       `<div class="swiper-slide"><img src="${src}" alt="Gambar Produk" /></div>`
     ).join("");
 
-    // Init swiper tanpa autoplay
+    // Init swiper dengan navigasi tombol
     const swiper = new Swiper(".produk-swiper", {
       loop: true,
       pagination: {
         el: ".swiper-pagination",
         clickable: true,
+      },
+      navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
       },
     });
 
