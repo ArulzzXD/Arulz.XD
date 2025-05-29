@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <title>Checkout Produk</title>
-  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,54 +24,9 @@
       text-align: center;
       color: #333;
     }
-    .slider-wrapper {
-      position: relative;
-      overflow: hidden;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+    .form-group {
+      margin-bottom: 15px;
     }
-    .slider-container {
-      display: flex;
-      transition: transform 0.3s ease-in-out;
-    }
-    .slider-container img {
-      width: 100%;
-      flex-shrink: 0;
-      cursor: zoom-in;
-    }
-    .slider-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      border: none;
-      color: white;
-      font-size: 20px;
-      padding: 10px;
-      cursor: pointer;
-      z-index: 1;
-    }
-    .slider-button.left { left: 10px; }
-    .slider-button.right { right: 10px; }
-
-    .dots {
-      text-align: center;
-      margin-top: 10px;
-    }
-    .dot {
-      display: inline-block;
-      height: 12px;
-      width: 12px;
-      margin: 0 4px;
-      background-color: #ccc;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    .dot.active {
-      background-color: #28a745;
-    }
-
-    .form-group { margin-bottom: 15px; }
     label {
       font-weight: bold;
       display: block;
@@ -136,6 +92,46 @@
       font-size: 18px;
     }
 
+    .produk-swiper {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .swiper-slide {
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 10px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .confirm-content {
+      background: white;
+      margin: 10% auto;
+      padding: 20px;
+      max-width: 400px;
+      border-radius: 10px;
+    }
+
+    .confirm-content table {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .confirm-content td {
+      padding: 6px 0;
+    }
+
     .modal {
       display: none;
       position: fixed;
@@ -147,48 +143,21 @@
       overflow: auto;
       background-color: rgba(0,0,0,0.8);
     }
-    .modal img {
-      max-width: 90%;
-      margin: 20px auto;
-      display: block;
-      border-radius: 12px;
-    }
-    .modal .close {
-      position: absolute;
-      top: 15px;
-      right: 25px;
-      color: white;
-      font-size: 35px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .confirm-content {
-      background: white;
-      margin: 10% auto;
-      padding: 20px;
-      max-width: 400px;
-      border-radius: 10px;
-    }
-    .confirm-content table {
-      width: 100%;
-      margin-bottom: 20px;
-    }
-    .confirm-content td {
-      padding: 6px 0;
-    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Checkout Produk</h2>
+
     <div class="form-group">
-      <label>Klik Gambar Untuk Melihat</label>
-      <div class="slider-wrapper">
-        <div class="slider-container" id="sliderContainer"></div>
-        <button class="slider-button left" onclick="showSlide(currentIndex - 1)">❮</button>
-        <button class="slider-button right" onclick="showSlide(currentIndex + 1)">❯</button>
+      <label>Gambar Produk</label>
+      <div class="swiper produk-swiper">
+        <div class="swiper-wrapper" id="swiper-wrapper">
+          <!-- Gambar akan diisi via JS -->
+        </div>
+        <div class="swiper-pagination"></div>
       </div>
-      <div class="dots" id="sliderDots"></div>
     </div>
 
     <div class="form-group">
@@ -237,23 +206,30 @@
         <label for="wa">Nomor WhatsApp</label>
         <input type="text" id="wa" name="wa" placeholder="08xxxxxxxxxx" required />
       </div>
+
       <div class="order-summary">
         <table class="summary-table">
-          <tr><td>Subtotal</td><td id="subtotal">Rp0</td></tr>
-          <tr><td>Pajak (0.5%)</td><td id="pajak">Rp0</td></tr>
-          <tr class="total-row"><td>Total</td><td id="total">Rp0</td></tr>
+          <tr>
+            <td>Subtotal</td>
+            <td id="subtotal">Rp0</td>
+          </tr>
+          <tr>
+            <td>Pajak (0.5%)</td>
+            <td id="pajak">Rp0</td>
+          </tr>
+          <tr class="total-row">
+            <td>Total</td>
+            <td id="total">Rp0</td>
+          </tr>
         </table>
       </div>
+
       <button type="submit">Kirim Pesanan via WhatsApp</button>
     </form>
     <a href="index.html"><button class="home-button">Kembali ke Beranda</button></a>
   </div>
 
-  <div id="imageModal" class="modal">
-    <span class="close" onclick="document.getElementById('imageModal').style.display='none'">&times;</span>
-    <div id="modalGallery"></div>
-  </div>
-
+  <!-- Modal Konfirmasi -->
   <div id="confirmModal" class="modal">
     <div class="confirm-content">
       <h3>Konfirmasi Pesanan</h3>
@@ -265,11 +241,12 @@
         <tr><td>WhatsApp</td><td id="c-wa"></td></tr>
         <tr><td>Pembayaran</td><td id="c-metode"></td></tr>
       </table>
-      <button id="lanjutBtn">Confirm</button>
+      <button id="lanjutBtn">Confrim</button>
       <button onclick="document.getElementById('confirmModal').style.display='none'">Batal</button>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     const params = new URLSearchParams(window.location.search);
     const produk = params.get("produk") || "Produk Tidak Diketahui";
@@ -282,11 +259,11 @@
     }
 
     let jumlah = 1;
-    let currentIndex = 0;
     const pajakPersen = 0.005;
 
     const pajak = () => Math.round((hargaProduk * jumlah) * pajakPersen);
     const total = () => (hargaProduk * jumlah + pajak());
+
     const updateHarga = () => {
       document.getElementById("subtotal").textContent = "Rp" + (hargaProduk * jumlah).toLocaleString();
       document.getElementById("pajak").textContent = "Rp" + pajak().toLocaleString();
@@ -298,43 +275,39 @@
     document.getElementById("deskripsi-produk").textContent = deskripsi;
     updateHarga();
 
-    document.getElementById("tambah").onclick = () => { jumlah++; document.getElementById("jumlah").value = jumlah; updateHarga(); };
-    document.getElementById("kurang").onclick = () => { if (jumlah > 1) { jumlah--; document.getElementById("jumlah").value = jumlah; updateHarga(); } };
+    document.getElementById("tambah").onclick = () => {
+      jumlah++;
+      document.getElementById("jumlah").value = jumlah;
+      updateHarga();
+    };
+    document.getElementById("kurang").onclick = () => {
+      if (jumlah > 1) {
+        jumlah--;
+        document.getElementById("jumlah").value = jumlah;
+        updateHarga();
+      }
+    };
 
-    const sliderContainer = document.getElementById("sliderContainer");
-    const dotsContainer = document.getElementById("sliderDots");
+    // Generate slider image HTML
+    const wrapper = document.getElementById("swiper-wrapper");
+    wrapper.innerHTML = spekGambar.map(src =>
+      `<div class="swiper-slide"><img src="${src}" alt="Gambar Produk" /></div>`
+    ).join("");
 
-    spekGambar.forEach((src, index) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = "Gambar Produk";
-      img.addEventListener('click', () => {
-        const modal = document.getElementById("imageModal");
-        const gallery = document.getElementById("modalGallery");
-        gallery.innerHTML = `<img src="${src}" alt="Preview">`;
-        modal.style.display = "block";
-      });
-      sliderContainer.appendChild(img);
-
-      const dot = document.createElement('span');
-      dot.classList.add('dot');
-      dot.addEventListener('click', () => showSlide(index));
-      dotsContainer.appendChild(dot);
+    // Init swiper tanpa autoplay
+    const swiper = new Swiper(".produk-swiper", {
+      loop: true,
+      pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+      },
     });
-
-    function showSlide(index) {
-      const max = spekGambar.length - 1;
-      currentIndex = Math.max(0, Math.min(index, max));
-      sliderContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
-      document.querySelectorAll('.dot').forEach((dot, i) => {
-        dot.classList.toggle('active', i === currentIndex);
-      });
-    }
-    showSlide(0);
 
     function getTransferInfo(metode) {
       switch (metode) {
-        case "DANA": case "OVO": case "GoPay": return "081234567890 a.n. Admin";
+        case "DANA": return "081234567890 a.n. Admin";
+        case "OVO": return "081234567890 a.n. Admin";
+        case "GoPay": return "081234567890 a.n. Admin";
         case "QRIS": return "https://link.com/qris";
         default: return "-";
       }
@@ -346,6 +319,7 @@
       const wa = document.getElementById("wa").value;
       const metode = document.getElementById("metode").value;
 
+      // Isi data di modal
       document.getElementById("c-produk").textContent = produk;
       document.getElementById("c-jumlah").textContent = jumlah + " pcs";
       document.getElementById("c-total").textContent = "Rp" + total().toLocaleString();
@@ -356,19 +330,20 @@
       document.getElementById("confirmModal").style.display = "block";
 
       document.getElementById("lanjutBtn").onclick = () => {
-        const message = `*📦 Formulir Checkout 📦*%0A` +
-        `==============================%0A` +
-        `Produk              : ${produk}%0A` +
-        `Jumlah              : ${jumlah} pcs%0A` +
-        `Harga Satuan  : Rp${hargaProduk.toLocaleString()}%0A` +
-        `Subtotal           : Rp${(hargaProduk * jumlah).toLocaleString()}%0A` +
-        `Pajak (0.5%)    : Rp${pajak().toLocaleString()}%0A` +
-        `Total                 : Rp${total().toLocaleString()}%0A` +
-        `==============================%0A` +
-        `Nama                : ${nama}%0A` +
-        `WhatsApp         : ${wa}%0A` +
-        `Metode Bayar  : ${metode}%0A` +
-        `Transfer ke       : ${getTransferInfo(metode)}`;
+        const message =
+`*📦 Formulir Checkout 📦*%0A` +
+`==============================%0A` +
+`Produk              : ${produk}%0A` +
+`Jumlah              : ${jumlah} pcs%0A` +
+`Harga Satuan  : Rp${hargaProduk.toLocaleString()}%0A` +
+`Subtotal           : Rp${(hargaProduk * jumlah).toLocaleString()}%0A` +
+`Pajak (0.5%)    : Rp${pajak().toLocaleString()}%0A` +
+`Total                 : Rp${total().toLocaleString()}%0A` +
+`==============================%0A` +
+`Nama                : ${nama}%0A` +
+`WhatsApp         : ${wa}%0A` +
+`Metode Bayar  : ${metode}%0A` +
+`Transfer ke       : ${getTransferInfo(metode)}`;
 
         const phoneNumber = "6283171080910";
         const waURL = `https://wa.me/${phoneNumber}?text=${message}`;
