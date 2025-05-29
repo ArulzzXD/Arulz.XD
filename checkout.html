@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Checkout Produk</title>
-  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,9 +23,54 @@
       text-align: center;
       color: #333;
     }
-    .form-group {
-      margin-bottom: 15px;
+    .slider-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid #ccc;
     }
+    .slider-container {
+      display: flex;
+      transition: transform 0.3s ease-in-out;
+    }
+    .slider-container img {
+      width: 100%;
+      flex-shrink: 0;
+      cursor: zoom-in;
+    }
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      font-size: 20px;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .slider-button.left { left: 10px; }
+    .slider-button.right { right: 10px; }
+
+    .dots {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .dot {
+      display: inline-block;
+      height: 12px;
+      width: 12px;
+      margin: 0 4px;
+      background-color: #ccc;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .dot.active {
+      background-color: #28a745;
+    }
+
+    .form-group { margin-bottom: 15px; }
     label {
       font-weight: bold;
       display: block;
@@ -90,35 +135,6 @@
       padding: 8px;
       font-size: 18px;
     }
-    .slider-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-    }
-    #slider-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      cursor: zoom-in;
-    }
-    .slider-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: rgba(0, 0, 0, 0.4);
-      border: none;
-      color: white;
-      padding: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      z-index: 1;
-      border-radius: 50%;
-    }
-    #prevBtn { left: 10px; }
-    #nextBtn { right: 10px; }
 
     .modal {
       display: none;
@@ -165,14 +181,14 @@
 <body>
   <div class="container">
     <h2>Checkout Produk</h2>
-
     <div class="form-group">
-      <label>Geser Gambar Produk</label>
-      <div class="slider-wrapper" id="slider-wrapper">
-        <button class="slider-btn" id="prevBtn">&#10094;</button>
-        <img id="slider-image" src="" alt="Gambar Produk" />
-        <button class="slider-btn" id="nextBtn">&#10095;</button>
+      <label>Klik Gambar Untuk Melihat</label>
+      <div class="slider-wrapper">
+        <div class="slider-container" id="sliderContainer"></div>
+        <button class="slider-button left" onclick="showSlide(currentIndex - 1)">❮</button>
+        <button class="slider-button right" onclick="showSlide(currentIndex + 1)">❯</button>
       </div>
+      <div class="dots" id="sliderDots"></div>
     </div>
 
     <div class="form-group">
@@ -185,7 +201,6 @@
         <label for="produk">Produk</label>
         <input type="text" id="produk" name="produk" readonly />
       </div>
-
       <div class="form-group">
         <label>Jumlah Barang</label>
         <div class="quantity-group">
@@ -194,12 +209,10 @@
           <button type="button" id="tambah">+</button>
         </div>
       </div>
-
       <div class="form-group">
         <label for="harga">Harga</label>
         <input type="text" id="harga" name="harga" readonly />
       </div>
-
       <div class="form-group">
         <label for="metode">Metode Pembayaran</label>
         <select id="metode" name="metode" required>
@@ -216,17 +229,14 @@
           <img src="https://i.imgur.com/WXDsDdx.jpeg" alt="QRIS" style="height: 40px;" />
         </div>
       </div>
-
       <div class="form-group">
         <label for="nama">Nama Pembeli</label>
         <input type="text" id="nama" name="nama" placeholder="Masukkan nama Anda" required />
       </div>
-
       <div class="form-group">
         <label for="wa">Nomor WhatsApp</label>
         <input type="text" id="wa" name="wa" placeholder="08xxxxxxxxxx" required />
       </div>
-
       <div class="order-summary">
         <table class="summary-table">
           <tr><td>Subtotal</td><td id="subtotal">Rp0</td></tr>
@@ -234,19 +244,16 @@
           <tr class="total-row"><td>Total</td><td id="total">Rp0</td></tr>
         </table>
       </div>
-
       <button type="submit">Kirim Pesanan via WhatsApp</button>
     </form>
     <a href="index.html"><button class="home-button">Kembali ke Beranda</button></a>
   </div>
 
-  <!-- Modal Gambar -->
   <div id="imageModal" class="modal">
     <span class="close" onclick="document.getElementById('imageModal').style.display='none'">&times;</span>
     <div id="modalGallery"></div>
   </div>
 
-  <!-- Modal Konfirmasi -->
   <div id="confirmModal" class="modal">
     <div class="confirm-content">
       <h3>Konfirmasi Pesanan</h3>
@@ -258,7 +265,7 @@
         <tr><td>WhatsApp</td><td id="c-wa"></td></tr>
         <tr><td>Pembayaran</td><td id="c-metode"></td></tr>
       </table>
-      <button id="lanjutBtn">Confrim</button>
+      <button id="lanjutBtn">Confirm</button>
       <button onclick="document.getElementById('confirmModal').style.display='none'">Batal</button>
     </div>
   </div>
@@ -275,10 +282,11 @@
     }
 
     let jumlah = 1;
+    let currentIndex = 0;
     const pajakPersen = 0.005;
+
     const pajak = () => Math.round((hargaProduk * jumlah) * pajakPersen);
     const total = () => (hargaProduk * jumlah + pajak());
-
     const updateHarga = () => {
       document.getElementById("subtotal").textContent = "Rp" + (hargaProduk * jumlah).toLocaleString();
       document.getElementById("pajak").textContent = "Rp" + pajak().toLocaleString();
@@ -290,50 +298,43 @@
     document.getElementById("deskripsi-produk").textContent = deskripsi;
     updateHarga();
 
-    document.getElementById("tambah").onclick = () => {
-      jumlah++;
-      document.getElementById("jumlah").value = jumlah;
-      updateHarga();
-    };
-    document.getElementById("kurang").onclick = () => {
-      if (jumlah > 1) {
-        jumlah--;
-        document.getElementById("jumlah").value = jumlah;
-        updateHarga();
-      }
-    };
+    document.getElementById("tambah").onclick = () => { jumlah++; document.getElementById("jumlah").value = jumlah; updateHarga(); };
+    document.getElementById("kurang").onclick = () => { if (jumlah > 1) { jumlah--; document.getElementById("jumlah").value = jumlah; updateHarga(); } };
 
-    // Slider Logic
-    let currentIndex = 0;
-    const sliderImage = document.getElementById("slider-image");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
+    const sliderContainer = document.getElementById("sliderContainer");
+    const dotsContainer = document.getElementById("sliderDots");
 
-    function showImage(index) {
-      if (spekGambar.length > 0) {
-        currentIndex = (index + spekGambar.length) % spekGambar.length;
-        sliderImage.src = spekGambar[currentIndex];
-      } else {
-        sliderImage.src = "?text=Gambar+Produk";
-      }
-    }
+    spekGambar.forEach((src, index) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = "Gambar Produk";
+      img.addEventListener('click', () => {
+        const modal = document.getElementById("imageModal");
+        const gallery = document.getElementById("modalGallery");
+        gallery.innerHTML = `<img src="${src}" alt="Preview">`;
+        modal.style.display = "block";
+      });
+      sliderContainer.appendChild(img);
 
-    prevBtn.addEventListener("click", () => showImage(currentIndex - 1));
-    nextBtn.addEventListener("click", () => showImage(currentIndex + 1));
-    sliderImage.addEventListener("click", () => {
-      const modal = document.getElementById("imageModal");
-      const gallery = document.getElementById("modalGallery");
-      gallery.innerHTML = spekGambar.map(src => `<img src="${src}" alt="Spek Gambar" />`).join("");
-      modal.style.display = "block";
+      const dot = document.createElement('span');
+      dot.classList.add('dot');
+      dot.addEventListener('click', () => showSlide(index));
+      dotsContainer.appendChild(dot);
     });
 
-    showImage(currentIndex);
+    function showSlide(index) {
+      const max = spekGambar.length - 1;
+      currentIndex = Math.max(0, Math.min(index, max));
+      sliderContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+      document.querySelectorAll('.dot').forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentIndex);
+      });
+    }
+    showSlide(0);
 
     function getTransferInfo(metode) {
       switch (metode) {
-        case "DANA": return "081234567890 a.n. Admin";
-        case "OVO": return "081234567890 a.n. Admin";
-        case "GoPay": return "081234567890 a.n. Admin";
+        case "DANA": case "OVO": case "GoPay": return "081234567890 a.n. Admin";
         case "QRIS": return "https://link.com/qris";
         default: return "-";
       }
@@ -355,20 +356,19 @@
       document.getElementById("confirmModal").style.display = "block";
 
       document.getElementById("lanjutBtn").onclick = () => {
-        const message =
-`*📦 Formulir Checkout 📦*%0A` +
-`==============================%0A` +
-`Produk              : ${produk}%0A` +
-`Jumlah              : ${jumlah} pcs%0A` +
-`Harga Satuan  : Rp${hargaProduk.toLocaleString()}%0A` +
-`Subtotal           : Rp${(hargaProduk * jumlah).toLocaleString()}%0A` +
-`Pajak (0.5%)    : Rp${pajak().toLocaleString()}%0A` +
-`Total                 : Rp${total().toLocaleString()}%0A` +
-`==============================%0A` +
-`Nama                : ${nama}%0A` +
-`WhatsApp         : ${wa}%0A` +
-`Metode Bayar  : ${metode}%0A` +
-`Transfer ke       : ${getTransferInfo(metode)}`;
+        const message = `*📦 Formulir Checkout 📦*%0A` +
+        `==============================%0A` +
+        `Produk              : ${produk}%0A` +
+        `Jumlah              : ${jumlah} pcs%0A` +
+        `Harga Satuan  : Rp${hargaProduk.toLocaleString()}%0A` +
+        `Subtotal           : Rp${(hargaProduk * jumlah).toLocaleString()}%0A` +
+        `Pajak (0.5%)    : Rp${pajak().toLocaleString()}%0A` +
+        `Total                 : Rp${total().toLocaleString()}%0A` +
+        `==============================%0A` +
+        `Nama                : ${nama}%0A` +
+        `WhatsApp         : ${wa}%0A` +
+        `Metode Bayar  : ${metode}%0A` +
+        `Transfer ke       : ${getTransferInfo(metode)}`;
 
         const phoneNumber = "6283171080910";
         const waURL = `https://wa.me/${phoneNumber}?text=${message}`;
