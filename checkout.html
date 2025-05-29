@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Checkout Produk</title>
-  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png" />
+  <link rel="icon" type="image/png" href="https://files.catbox.moe/nbsldh.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <style>
@@ -97,7 +97,6 @@
       border-radius: 10px;
       border: 1px solid #ccc;
       margin-bottom: 10px;
-      position: relative; /* needed for absolute nav buttons */
     }
 
     .swiper-slide {
@@ -116,7 +115,6 @@
       user-select: none;
     }
 
-    /* Modal */
     .confirm-content {
       background: white;
       margin: 10% auto;
@@ -146,61 +144,6 @@
       background-color: rgba(0,0,0,0.8);
     }
 
-    /* Swiper Navigation Buttons style like https://topup-instan.v-pedia.web.id/ */
-    /* Override tombol navigasi Swiper */
-.swiper-button-prev,
-.swiper-button-next {
-  width: 60px;              /* lebarkan tombol */
-  height: 100px;            /* buat memanjang */
-  background-color: #fff;   /* putih polos */
-  border: 6px solid #000;   /* garis tepi hitam */
-  border-radius: 12px;      /* sudut agak bulat */
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  cursor: pointer;
-  box-shadow: none;         /* hilangkan shadow kalau perlu */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Panah dengan pseudo-element */
-.swiper-button-prev::after,
-.swiper-button-next::after {
-  content: "";
-  display: block;
-  width: 20px;
-  height: 20px;
-  border: solid #000;
-  border-width: 0 6px 6px 0;  /* hanya dua sisi */
-}
-
-/* Arah panah */
-.swiper-button-prev::after {
-  transform: rotate(135deg);  /* panah kiri */
-}
-
-.swiper-button-next::after {
-  transform: rotate(-45deg);  /* panah kanan */
-}
-
-/* Posisi kiri/kanan */
-.swiper-button-prev {
-  left: 8px;
-}
-
-.swiper-button-next {
-  right: 8px;
-}
-
-/* Hover state (opsional) */
-.swiper-button-prev:hover,
-.swiper-button-next:hover {
-  background-color: #fff;  /* tetap putih */
-  border-color: #111;      /* agak gelap saat hover */
-}
   </style>
 </head>
 <body>
@@ -214,9 +157,6 @@
           <!-- Gambar akan diisi via JS -->
         </div>
         <div class="swiper-pagination"></div>
-        <!-- Navigasi tombol -->
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
       </div>
     </div>
 
@@ -354,16 +294,12 @@
       `<div class="swiper-slide"><img src="${src}" alt="Gambar Produk" /></div>`
     ).join("");
 
-    // Init swiper tanpa autoplay, dengan navigasi
+    // Init swiper tanpa autoplay
     const swiper = new Swiper(".produk-swiper", {
       loop: true,
       pagination: {
         el: ".swiper-pagination",
         clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
       },
     });
 
